@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 set -uo pipefail
+changed=0
 
 usage() {
 	echo "Usage:"
@@ -9,98 +10,24 @@ usage() {
 
 run() {
 	"$@"
-	rc=$?
+	local rc=$?
+
 	if [ $rc -eq 1 ]; then
 		exit 1
 	fi
-	return $rc
+
+	if [ $rc -eq 2 ]; then
+		changed=2
+	fi
 }
 
-create_file() {
-	# TARGET チェック
-	if [ -z "${TARGET:-}" ]; then
-		echo "Error: TARGET is not specified"
-		return 1
-	fi
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+RESOURCE_DIR="$ROOT_DIR/lib/resource"
 
-	local target="$TARGET"
-
-	# 既に存在する場合
-	if [ -e "$target" ]; then
-		return 0
-	fi
-
-	# ファイル作成
-	touch "$target"
-	return 2
-}
-
-delete_file() {
-	# TARGET チェック
-	if [ -z "${TARGET:-}" ]; then
-		echo "Error: TARGET is not specified"
-		return 1
-	fi
-
-	local target="$TARGET"
-
-	# ファイル存在チェック
-	if [ ! -e "$target" ]; then
-		return 0
-	fi
-
-	# 削除
-	rm "$target"
-	return 2
-}
-
-set_owner() {
-	local target="$TARGET"
-
-	# 現在の所有者取得
-	local current_owner
-	current_owner=$(stat -c %U "$target")
-
-	# 同一なら何もしない
-	if [ "$current_owner" = "$OWNER" ]; then
-		return 0
-	fi
-
-	chown "$OWNER" "$target"
-	return 2
-}
-
-set_group() {
-	local target="$TARGET"
-
-	# 現在のグループ所有者取得
-	local current_group
-	current_group=$(stat -c %G "$target")
-
-	# 同一なら何もしない
-	if [ "$current_group" = "$GROUP" ]; then
-		return 0
-	fi
-
-	chgrp "$GROUP" "$target"
-	return 2
-}
-
-set_mode() {
-	local target="$TARGET"
-
-	# 現在のパーミッション設定取得
-	local current_mode
-	current_mode=$(stat -c %a "$target")
-
-	# 同一なら何もしない
-	if [ "$current_mode" = "$MODE" ]; then
-		return 0
-	fi
-
-	chmod "$MODE" "$target"
-	return 2
-}
+for f in "$RESOURCE_DIR"/*.sh; do
+	source "$f"
+done
 
 # 引数が1つ未満ならエラー
 if [ $# -lt 1 ]; then
@@ -134,16 +61,16 @@ case "$ACTION" in
 create)
 	run create_file
 
-	if [-n "${OWNER}"]; then
-		run set_owner
+	if [ -n "${OWNER:-}" ]; then
+		run update_owner
 	fi
 
-	if [-n "${GROUP}"]; then
-		run set_group
+	if [ -n "${GROUP:-}" ]; then
+		run update_group
 	fi
 
-	if [-n "${MODE}"]; then
-		run set_mode
+	if [ -n "${MODE:-}" ]; then
+		run update_mode
 	fi
 	;;
 delete)
@@ -154,3 +81,5 @@ delete)
 	exit 1
 	;;
 esac
+
+exit $changed
