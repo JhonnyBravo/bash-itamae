@@ -51,34 +51,31 @@ local)
 	fi
 
 	source "$path"
+	run validate_env
 	;;
 *)
 	usage
 	;;
 esac
 
-case "$ACTION" in
+case "$RESOURCE_ACTION" in
 create)
 	run create_file
 
-	if [ -n "${OWNER:-}" ]; then
+	if [ -n "${RESOURCE_OWNER:-}" ]; then
 		run update_owner
 	fi
 
-	if [ -n "${GROUP:-}" ]; then
+	if [ -n "${RESOURCE_GROUP:-}" ]; then
 		run update_group
 	fi
 
-	if [ -n "${MODE:-}" ]; then
+	if [ -n "${RESOURCE_MODE:-}" ]; then
 		run update_mode
 	fi
 	;;
 delete)
 	run delete_file
-	;;
-*)
-	echo "Unknown ACTION: $ACTION"
-	exit 1
 	;;
 esac
 
