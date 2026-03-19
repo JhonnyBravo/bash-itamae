@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 setup() {
-	source ./test/owner_resource/test01.env
+	source ./test/owner_resource/cases/different.env
 	source ./lib/resource/owner_resource.sh
 	rm -f "$RESOURCE_PATH"
 	touch "$RESOURCE_PATH"
@@ -24,7 +24,7 @@ teardown() {
 }
 
 @test "update_owner 実行時に RESOURCE_OWNER に指定された所有者と現在の所有者が一致する場合は、所有者を変更せずに exit 0 を返す" {
-	source ./test/owner_resource/test02.env
+	source ./test/owner_resource/cases/same.env
 	run update_owner
 	[ "$status" -eq 0 ]
 
