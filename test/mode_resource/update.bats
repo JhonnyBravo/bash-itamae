@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 setup() {
-	source ./test/mode_resource/test01.env
+	source ./test/mode_resource/cases/different.env
 	source ./lib/resource/mode_resource.sh
 	rm -f "$RESOURCE_PATH"
 	touch "$RESOURCE_PATH"
@@ -23,7 +23,7 @@ teardown() {
 }
 
 @test "update_mode 実行時に RESOURCE_MODE に指定されたパーミッション設定値と現在のパーミッション設定値が一致する場合は、パーミッション設定値を変更せずに exit 0 を返す" {
-	source ./test/mode_resource/test02.env
+	source ./test/mode_resource/cases/same.env
 	run update_mode
 	[ "$status" -eq 0 ]
 
