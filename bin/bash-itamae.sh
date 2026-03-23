@@ -2,12 +2,6 @@
 set -uo pipefail
 changed=0
 
-usage() {
-	echo "Usage:"
-	echo "  itamae local <path>"
-	exit 1
-}
-
 run() {
 	"$@"
 	local rc=$?
@@ -29,32 +23,12 @@ for f in "$RESOURCE_DIR"/*.sh; do
 	source "$f"
 done
 
-# 引数が1つ未満ならエラー
-if [ $# -lt 1 ]; then
-	usage
-fi
+run validate_cli_args "$@"
 
-subcommand="$1"
-shift
-
-case "$subcommand" in
+case "$CLI_SUBCOMMAND" in
 local)
-	if [ $# -ne 1 ]; then
-		usage
-	fi
-
-	path="$1"
-
-	if [ ! -e "$path" ]; then
-		echo "Error: path not found: $path"
-		exit 1
-	fi
-
-	source "$path"
+	source "$RESOURCE_FILE_PATH"
 	run validate_env
-	;;
-*)
-	usage
 	;;
 esac
 
