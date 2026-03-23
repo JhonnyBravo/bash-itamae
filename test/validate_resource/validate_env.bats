@@ -6,35 +6,35 @@ setup() {
 }
 
 @test "正常系: RESOURCE_ACTION=create + RESOURCE_PATHあり → 0" {
-	source ./test/validate_resource/test01.env
+	source ./test/validate_resource/cases/valid_action_create.env
 
 	run validate_env
 	[ "$status" -eq 0 ]
 }
 
 @test "正常系: RESOURCE_ACTION=delete + RESOURCE_PATHあり → 0" {
-	source ./test/validate_resource/test05.env
+	source ./test/validate_resource/cases/valid_action_delete.env
 
 	run validate_env
 	[ "$status" -eq 0 ]
 }
 
 @test "異常系: RESOURCE_ACTION 未指定 → 1" {
-	source ./test/validate_resource/test02.env
+	source ./test/validate_resource/cases/no_action.env
 
 	run validate_env
 	[ "$status" -eq 1 ]
 }
 
 @test "異常系: RESOURCE_ACTION 不正 → 1" {
-	source ./test/validate_resource/test03.env
+	source ./test/validate_resource/cases/invalid_action.env
 
 	run validate_env
 	[ "$status" -eq 1 ]
 }
 
 @test "異常系: RESOURCE_PATH 未指定 → 1" {
-	source ./test/validate_resource/test04.env
+	source ./test/validate_resource/cases/no_path.env
 
 	run validate_env
 	[ "$status" -eq 1 ]
