@@ -14,6 +14,7 @@ teardown() {
 	touch "$RESOURCE_PATH"
 
 	run delete_file
+	echo "$output" >&3
 	[ "$status" -eq 2 ]
 	[ ! -e "$RESOURCE_PATH" ]
 }
@@ -23,5 +24,6 @@ teardown() {
 	rm -f "$RESOURCE_PATH"
 
 	run delete_file
+	echo "$output" >&3
 	[ "$status" -eq 0 ]
 }

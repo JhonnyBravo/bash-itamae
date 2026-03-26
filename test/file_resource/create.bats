@@ -14,6 +14,7 @@ teardown() {
 	touch "$RESOURCE_PATH"
 
 	run create_file
+	echo "$output" >&3
 	[ "$status" -eq 0 ]
 }
 
@@ -22,6 +23,7 @@ teardown() {
 	rm -f "$RESOURCE_PATH"
 
 	run create_file
+	echo "$output" >&3
 	[ "$status" -eq 2 ]
 	[ -f "$RESOURCE_PATH" ]
 }
