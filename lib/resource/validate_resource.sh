@@ -1,21 +1,25 @@
+if ! type info >/dev/null 2>&1; then
+	source "$(dirname "${BASH_SOURCE[0]}")/log_resource.sh"
+fi
+
 validate_env() {
 	# RESOURCE_ACTION チェック
 	if [ -z "${RESOURCE_ACTION:-}" ]; then
-		echo "Error: RESOURCE_ACTION is not specified" >&2
+		error "RESOURCE_ACTION is not specified"
 		return 1
 	fi
 
 	case "$RESOURCE_ACTION" in
 	create | delete) ;;
 	*)
-		echo "Error: RESOURCE_ACTION must be 'create' or 'delete'" >&2
+		error "RESOURCE_ACTION must be 'create' or 'delete'"
 		return 1
 		;;
 	esac
 
 	# RESOURCE_PATH チェック
 	if [ -z "${RESOURCE_PATH:-}" ]; then
-		echo "Error: RESOURCE_PATH is not specified" >&2
+		error "RESOURCE_PATH is not specified"
 		return 1
 	fi
 
@@ -25,7 +29,7 @@ validate_env() {
 validate_cli_args() {
 	# 引数チェック
 	if [ $# -lt 1 ]; then
-		echo "Error: subcommand is required" >&2
+		error "subcommand is required"
 		return 1
 	fi
 
@@ -35,14 +39,14 @@ validate_cli_args() {
 	case "$subcommand" in
 	local)
 		if [ $# -ne 1 ]; then
-			echo "Error: local requires exactly 1 argument" >&2
+			error "local requires exactly 1 argument"
 			return 1
 		fi
 
 		local path="$1"
 
 		if [ ! -e "$path" ]; then
-			echo "Error: path not found: $path" >&2
+			error "path not found: $path"
 			return 1
 		fi
 
@@ -52,7 +56,7 @@ validate_cli_args() {
 		export RESOURCE_FILE_PATH CLI_SUBCOMMAND
 		;;
 	*)
-		echo "Error: unknown subcommand: $subcommand" >&2
+		error "unknown subcommand: $subcommand"
 		return 1
 		;;
 	esac

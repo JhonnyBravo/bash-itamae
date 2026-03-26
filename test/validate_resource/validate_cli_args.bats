@@ -15,26 +15,31 @@ teardown() {
 
 @test "引数なし → exit 1" {
 	run validate_cli_args
+	echo "$output" >&3
 	[ "$status" -eq 1 ]
 }
 
 @test "不正なサブコマンド → exit 1" {
 	run validate_cli_args invalid
+	echo "$output" >&3
 	[ "$status" -eq 1 ]
 }
 
 @test "local だが引数なし → exit 1" {
 	run validate_cli_args local
+	echo "$output" >&3
 	[ "$status" -eq 1 ]
 }
 
 @test "local だが引数が2つ → exit 1" {
 	run validate_cli_args local a b
+	echo "$output" >&3
 	[ "$status" -eq 1 ]
 }
 
 @test "存在しない path → exit 1" {
 	run validate_cli_args local /not/exist/file.env
+	echo "$output" >&3
 	[ "$status" -eq 1 ]
 }
 

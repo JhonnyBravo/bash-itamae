@@ -23,6 +23,7 @@ setup() {
 	source ./test/validate_resource/cases/no_action.env
 
 	run validate_env
+	echo "$output" >&3
 	[ "$status" -eq 1 ]
 }
 
@@ -30,6 +31,7 @@ setup() {
 	source ./test/validate_resource/cases/invalid_action.env
 
 	run validate_env
+	echo "$output" >&3
 	[ "$status" -eq 1 ]
 }
 
@@ -37,5 +39,6 @@ setup() {
 	source ./test/validate_resource/cases/no_path.env
 
 	run validate_env
+	echo "$output" >&3
 	[ "$status" -eq 1 ]
 }
