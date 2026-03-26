@@ -14,6 +14,8 @@ teardown() {
 
 @test "update_mode 実行時に RESOURCE_MODE に指定されたパーミッション設定値と現在のパーミッション設定値が異なる場合は、パーミッション設定値を変更して exit 2 を返す" {
 	run update_mode
+
+	echo "$output" >&3
 	[ "$status" -eq 2 ]
 
 	local act_mode=$(get_mode)
@@ -25,6 +27,8 @@ teardown() {
 @test "update_mode 実行時に RESOURCE_MODE に指定されたパーミッション設定値と現在のパーミッション設定値が一致する場合は、パーミッション設定値を変更せずに exit 0 を返す" {
 	source ./test/mode_resource/cases/same.env
 	run update_mode
+
+	echo "$output" >&3
 	[ "$status" -eq 0 ]
 
 	local act_mode=$(get_mode)
