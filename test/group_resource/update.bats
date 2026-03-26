@@ -16,6 +16,8 @@ teardown() {
 
 @test "update_group 実行時に RESOURCE_GROUP に指定された所有者と現在の所有者が異なる場合は、所有者を変更して exit 2 を返す" {
 	run update_group
+
+	echo "$output" >&3
 	[ "$status" -eq 2 ]
 
 	# chgrp モック化の副作用でグループ所有者変更のテストができない為、対象外とする。
@@ -26,6 +28,8 @@ teardown() {
 @test "update_group 実行時に RESOURCE_GROUP に指定された所有者と現在の所有者が一致する場合は、所有者を変更せずに exit 0 を返す" {
 	source ./test/group_resource/cases/same.env
 	run update_group
+
+	echo "$output" >&3
 	[ "$status" -eq 0 ]
 
 	local new_group=$(get_group)
