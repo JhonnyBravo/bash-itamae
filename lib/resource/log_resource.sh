@@ -2,10 +2,14 @@
 
 # INFOログ
 info() {
-	printf "INFO : %s\n" "$*"
+	local fmt="$1"
+	shift
+	printf "INFO: ${fmt}\n" "$@"
 }
 
 # ERRORログ（stderr出力）
 error() {
-	printf "ERROR: %s\n" "$*" >&2
+	local fmt="$1"
+	shift
+	printf "ERROR: ${fmt}\n" "$@" >&2
 }

@@ -1,11 +1,12 @@
 if ! type info >/dev/null 2>&1; then
 	source "$(dirname "${BASH_SOURCE[0]}")/log_resource.sh"
+	source "$(dirname "${BASH_SOURCE[0]}")/message_resource.sh"
 fi
 
 create_file() {
 	local target="$RESOURCE_PATH"
 	local action="$RESOURCE_ACTION"
-	info "file[${target}] action ${action}"
+	info "$I001" "file" "$target" "$action"
 
 	# 既に存在する場合
 	if [ -e "$target" ]; then
@@ -13,7 +14,7 @@ create_file() {
 	fi
 
 	# ファイル作成
-	info "Creating ${target}"
+	info "$I002" "$target"
 	touch "$target"
 	return 2
 }
@@ -21,7 +22,7 @@ create_file() {
 delete_file() {
 	local target="$RESOURCE_PATH"
 	local action="$RESOURCE_ACTION"
-	info "file[${target}] action ${action}"
+	info "$I001" "file" "$target" "$action"
 
 	# ファイル存在チェック
 	if [ ! -e "$target" ]; then
@@ -29,7 +30,7 @@ delete_file() {
 	fi
 
 	# 削除
-	info "Deleting ${target}"
+	info "$I003" "$target"
 	rm "$target"
 	return 2
 }

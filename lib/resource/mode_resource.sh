@@ -1,5 +1,6 @@
 if ! type info >/dev/null 2>&1; then
 	source "$(dirname "$BASH_SOURCE[0]")/log_resource.sh"
+	source "$(dirname "$BASH_SOURCE[0]")/message_resource.sh"
 fi
 
 get_mode() {
@@ -26,7 +27,7 @@ update_mode() {
 		return 0
 	fi
 
-	info "Changing mode from ${current_mode} to ${new_mode}"
+	info "$I004" "mode" "$current_mode" "$new_mode"
 	chmod "$new_mode" "$target"
 	return 2
 }

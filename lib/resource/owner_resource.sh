@@ -1,5 +1,6 @@
 if ! type info >/dev/null 2>&1; then
 	source "$(dirname "$BASH_SOURCE[0]")/log_resource.sh"
+	source "$(dirname "$BASH_SOURCE[0]")/message_resource.sh"
 fi
 
 get_owner() {
@@ -19,7 +20,7 @@ update_owner() {
 		return 0
 	fi
 
-	info "Changing owner from ${current_owner} to ${new_owner}"
+	info "$I004" "owner" "$current_owner" "$new_owner"
 	chown "$new_owner" "$target"
 	return 2
 }

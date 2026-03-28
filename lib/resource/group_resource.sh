@@ -1,5 +1,6 @@
 if ! type info >/dev/null 2>&1; then
 	source "$(dirname "${BASH_SOURCE[0]}")/log_resource.sh"
+	source "$(dirname "${BASH_SOURCE[0]}")/message_resource.sh"
 fi
 
 get_group() {
@@ -19,7 +20,7 @@ update_group() {
 		return 0
 	fi
 
-	info "Changing group from ${current_group} to ${new_group}"
+	info "$I004" "group" "$current_group" "$new_group"
 
 	chgrp "$new_group" "$target"
 	return 2
