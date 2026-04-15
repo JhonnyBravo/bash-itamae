@@ -4,6 +4,20 @@ if ! type info >/dev/null 2>&1; then
 fi
 
 validate_env() {
+	# RESOURCE_NAME チェック
+	if [ -z "${RESOURCE_NAME:-}" ]; then
+		error "$E101" "RESOURCE_NAME"
+		return 1
+	fi
+
+	case "$RESOURCE_NAME" in
+	file | directory) ;;
+	*)
+		error "$E103"
+		return 1
+		;;
+	esac
+
 	# RESOURCE_ACTION チェック
 	if [ -z "${RESOURCE_ACTION:-}" ]; then
 		error "$E101" "RESOURCE_ACTION"
