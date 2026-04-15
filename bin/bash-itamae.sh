@@ -32,24 +32,50 @@ local)
 	;;
 esac
 
-case "$RESOURCE_ACTION" in
-create)
-	run create_file
+case "$RESOURCE_NAME" in
+file)
+	case "$RESOURCE_ACTION" in
+	create)
+		run create_file
 
-	if [ -n "${RESOURCE_OWNER:-}" ]; then
-		run update_owner
-	fi
+		if [ -n "${RESOURCE_OWNER:-}" ]; then
+			run update_owner
+		fi
 
-	if [ -n "${RESOURCE_GROUP:-}" ]; then
-		run update_group
-	fi
+		if [ -n "${RESOURCE_GROUP:-}" ]; then
+			run update_group
+		fi
 
-	if [ -n "${RESOURCE_MODE:-}" ]; then
-		run update_mode
-	fi
+		if [ -n "${RESOURCE_MODE:-}" ]; then
+			run update_mode
+		fi
+		;;
+	delete)
+		run delete_file
+		;;
+	esac
 	;;
-delete)
-	run delete_file
+directory)
+	case "$RESOURCE_ACTION" in
+	create)
+		run create_directory
+
+		if [ -n "${RESOURCE_OWNER:-}" ]; then
+			run update_owner
+		fi
+
+		if [ -n "${RESOURCE_GROUP:-}" ]; then
+			run update_group
+		fi
+
+		if [ -n "${RESOURCE_MODE:-}" ]; then
+			run update_mode
+		fi
+		;;
+	delete)
+		run delete_directory
+		;;
+	esac
 	;;
 esac
 
