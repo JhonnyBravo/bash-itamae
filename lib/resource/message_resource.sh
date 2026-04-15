@@ -5,6 +5,7 @@ E002="local requires exactly 1 argument"
 
 E101="%s is not specified"
 E102="RESOURCE_ACTION must be 'create' or 'delete'"
+E103="RESOURCE_NAME must be 'file' or 'directory'"
 
 E201="%s not found: %s"
 E202="unknown %s: %s"
